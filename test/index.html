@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests w/o initialized AppCache manifest</title>
+
+    <link href="/node_modules/mocha/mocha.css" rel="stylesheet" />
+
+    <script src="/node_modules/mocha/mocha.js"></script>
+    <script src="/node_modules/chai/chai.js"></script>
+    <script>
+      var expect = chai.expect;
+      mocha.setup({ ui:'bdd' });
+      mocha.reporter('html');
+      mocha.globals(['angular']);
+    </script>
+
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/node_modules/angular-mocks/angular-mocks.js"></script>
+
+    <script src="/dist/appcache.js"></script>
+
+    <script src="unsupported-browsers.js"></script>
+    <script src="uninitialized-supported.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script>
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
+    </script>
+
+    <a href="index-with-appcache.html" style="margin: 60px 50px;">Toggle appcache initialized</a>
+  </body>
+</html>

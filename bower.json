@@ -1,0 +1,23 @@
+{
+  "name": "ng-appcache",
+  "version": "1.0.0",
+  "homepage": "https://github.com/orbitbot/ng-appcache",
+  "authors": [
+    "Patrik Johnson <patrik@zebros.fi>"
+  ],
+  "description": "Angular module for working with appcache",
+  "keywords": [
+    "angular",
+    "angularJS",
+    "appcache",
+    "offline"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
