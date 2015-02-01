@@ -48,7 +48,6 @@
       self.abortUpdate = function() {
         var deferred = $q.defer();
         try {
-          // $window.applicationCache.abortUpdate();
           $window.applicationCache.abort();
           deferred.resolve();
         } catch(e) {
@@ -85,19 +84,6 @@
         return deferred.promise;
       };
 
-      self.addEventListener = function(eventName, handler, useCapture) {
-        useCapture = angular.isUndefined(useCapture) ? false : useCapture;
-        $window.applicationCache.addEventListener(eventName, handler, useCapture);
-      };
-
-      self.removeEventListener = function(eventName, handler, useCapture) {
-        useCapture = angular.isUndefined(useCapture) ? false : useCapture;
-        $window.applicationCache.removeEventListener(eventName, handler, useCapture);
-      };
-
-      self.on  = self.addEventListener;
-      self.off = self.removeEventListener;
-
       self.swapCache = function() {
         var deferred = $q.defer();
         try {
@@ -110,6 +96,19 @@
         }
         return deferred.promise;
       };
+
+      self.addEventListener = function(eventName, handler, useCapture) {
+        useCapture = angular.isUndefined(useCapture) ? false : useCapture;
+        $window.applicationCache.addEventListener(eventName, handler, useCapture);
+      };
+
+      self.removeEventListener = function(eventName, handler, useCapture) {
+        useCapture = angular.isUndefined(useCapture) ? false : useCapture;
+        $window.applicationCache.removeEventListener(eventName, handler, useCapture);
+      };
+
+      self.on  = self.addEventListener;
+      self.off = self.removeEventListener;
 
       var statusTexts = {
         0: 'UNCACHED',
@@ -130,11 +129,11 @@
     } else {
       self.abortUpdate = unsupported;
       self.checkUpdate = unsupported;
+      self.swapCache = unsupported;
       self.addEventListener = function() {};
       self.removeEventListener = function() {};
       self.on = function() {};
       self.off = function() {};
-      self.swapCache = unsupported;
     }
 
     return self;

@@ -51,6 +51,6 @@ gulp.task('build', function() {
 
 
 gulp.task('develop', ['serve', 'jshint'], function() {
-  gulp.watch(paths.js, ['jshint']);
+  gulp.watch(paths.js, ['jshint', 'build']);
   gulp.watch([paths.dist, paths.tests], ['testRun']);
 });

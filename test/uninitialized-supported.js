@@ -1,4 +1,6 @@
 describe('a browser with an uninitialized applicationCache', function() {
+  'use strict';
+
   beforeEach(module('ng-appcache'));
 
   var appcache;
@@ -14,12 +16,11 @@ describe('a browser with an uninitialized applicationCache', function() {
   it('gets offered all API methods', function() {
     expect(appcache).to.have.property('abortUpdate');
     expect(appcache).to.have.property('checkUpdate');
+    expect(appcache).to.have.property('swapCache');
     expect(appcache).to.have.property('addEventListener');
     expect(appcache).to.have.property('removeEventListener');
     expect(appcache).to.have.property('on');
     expect(appcache).to.have.property('off');
-    expect(appcache).to.have.property('abortUpdate');
-    expect(appcache).to.have.property('swapCache');
   });
 
   it('rejects promise methods', function(done) {
