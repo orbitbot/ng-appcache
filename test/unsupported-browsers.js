@@ -47,4 +47,8 @@ describe('a browser without applicationCache', function() {
     appcache.on('error', errorHandler);
     appcache.off('error', errorHandler);
   });
+
+  it('should have an undefined applicationCache.status', function() {
+    expect(appcache.status).to.be.undefined();
+  });
 });
