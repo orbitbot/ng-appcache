@@ -28,12 +28,11 @@
     "chai": "^1.10.0",
     "gulp": "^3.8.10",
     "gulp-connect": "^2.2.0",
-    "gulp-jshint": "^1.9.0",
+    "gulp-jshint": "^1.9.1",
     "gulp-mocha-phantomjs": "^0.5.3",
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^1.1.0",
     "jshint-stylish": "^1.0.0",
-    "lazypipe": "^0.2.2",
     "mocha": "^2.1.0"
   }
 }

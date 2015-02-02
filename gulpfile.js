@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var lazypipe = require('lazypipe');
 var mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 // plugins
@@ -16,14 +15,11 @@ var paths = {
 };
 
 
-var lazyJsHint = lazypipe()
-  .pipe(jshint)
-  .pipe(jshint.reporter, 'jshint-stylish');
-
 gulp.task('jshint', function() {
-  gulp.src(paths.js).pipe(lazyJsHint());
+  gulp.src(paths.js)
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
 });
-
 
 gulp.task('serve', function() {
   return connect.server();
