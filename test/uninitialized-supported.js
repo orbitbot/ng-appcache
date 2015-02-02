@@ -25,44 +25,28 @@ describe('on a page without a manifest link', function() {
     });
 
     it('rejects promise methods', function(done) {
+      var count = 0;
+
       function checkFail(reason) {
         expect(reason).to.match(/InvalidStateError|INVALID_STATE_ERR/);
-      }
-
-      // This is required to allow PhantomJS tests, since
-      // window.applicationCache.abort() is undefined
-      function wrapAbort() {
-        try {
-          return appcache.abortUpdate().catch(checkFail);
-        } catch (e) {
-          expect(e.message).to.match(/^'undefined'/);
-        }
+        count += 1;
       }
 
       $q.all([
-        wrapAbort(),
+        appcache.abortUpdate().then(function() { count += 1; }),
         appcache.checkUpdate().catch(checkFail),
         appcache.swapCache().catch(checkFail)
       ])
       .then(function() {
+        expect(count).to.equal(3);
         done();
       });
 
       $rootScope.$digest();
     });
 
-    it('does not throw errors for unsupported methods', function() {
-      function errorHandler(error) {
-        expect(error).to.equal('impossible');
-      }
-      appcache.addEventListener('error', errorHandler);
-      appcache.removeEventListener('error', errorHandler);
-      appcache.on('error', errorHandler);
-      appcache.off('error', errorHandler);
-    });
-
-    it('should have an undefined applicationCache.status', function() {
-      expect(appcache.status).to.be.undefined();
+    it('should display applicationCache.status as UNCACHED', function() {
+      expect(appcache.status).to.equal('UNCACHED');
     });
 
   });

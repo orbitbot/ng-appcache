@@ -24,8 +24,61 @@ describe('on a page with a manifest link', function() {
       expect(appcache).to.have.property('off');
     });
 
-    it('should display the appcache status');
+    it('should display the appcache status', function() {
+      expect(appcache.status).to.equal('IDLE');
+    });
 
 
+    it('should reject promises fired in the wrong state', function(done) {
+      var count = 0;
+
+      function checkFail(reason) {
+        expect(reason).to.match(/InvalidStateError|INVALID_STATE_ERR/);
+        count += 1;
+      }
+
+      $q.all([
+        appcache.abortUpdate().then(function() { count += 1; }),
+        appcache.swapCache().catch(checkFail)
+      ])
+      .then(function() {
+        expect(count).to.equal(2);
+        done();
+      });
+      $rootScope.$digest();
+    });
+
+    it('should reject checkUpdate promise', function(done) {
+      appcache.checkUpdate()
+      .catch(function() {
+        done();
+      });
+    });
+
+    describe('eventlisteners', function() {
+      var noupdateCounter = 0;
+
+      function checkListener(doneFn) {
+        noupdateCounter += 1;
+        doneFn();
+      }
+
+      afterEach(function() {
+        expect(noupdateCounter).to.equal(1);
+      });
+
+      it('should fire listeners for appcache events', function(done) {
+        appcache.on('noupdate', checkListener(done));
+        window.applicationCache.update();
+      });
+
+      it('should allow removing event listeners', function(done) {
+        appcache.off('noupdate', checkListener);
+        appcache.on('noupdate', function() {
+          setTimeout(done, 300);
+        });
+        window.applicationCache.update();
+      });
+    });
   });
 });

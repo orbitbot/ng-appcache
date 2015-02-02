@@ -46,33 +46,28 @@
     if ($window.applicationCache) {
 
       self.abortUpdate = function() {
-        var deferred = $q.defer();
         try {
           $window.applicationCache.abort();
-          deferred.resolve();
         } catch(e) {
-          if (!(e.name === 'InvalidStateError' || e.name === 'INVALID_STATE_ERR'))
+          // abort may be undefined in certain browsers, eg. PhantomJS
+          if (!e.message.match(/^'undefined'/))
             throw e;
-          deferred.reject(e.name);
         }
-        return deferred.promise;
+        return $q.when();
       };
 
       self.checkUpdate = function() {
         var deferred = $q.defer();
 
-        var resolve = function() { $timeout(function() { deferred.resolve(); }, true); };
-        var reject  = function() { $timeout(function() { deferred.reject();  }, true); };
+        function cleanup() {
+          self.removeEventListener('updateready', resolve);
+          self.removeEventListener('noupdate', reject);
+        }
+        function resolve() { deferred.resolve(); $rootScope.$digest(); cleanup(); }
+        function reject()  { deferred.reject();  $rootScope.$digest(); cleanup(); }
 
         self.addEventListener('updateready', resolve);
         self.addEventListener('noupdate', reject);
-
-        deferred.promise['finally'](function() {
-          self.removeEventListener('updateready', resolve);
-          self.removeEventListener('noupdate', reject);
-          resolve = null;
-          reject = null;
-        });
 
         try {
           $window.applicationCache.update();
@@ -118,6 +113,7 @@
         4: 'UPDATEREADY',
         5: 'OBSOLETE'
       };
+      self.status = statusTexts[$window.applicationCache.status];
 
       $rootScope.$watch(function() {
         return $window.applicationCache.status;
