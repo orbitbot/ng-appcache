@@ -7,11 +7,13 @@ describe('on a page with a manifest link', function() {
     var appcache;
     var $rootScope;
     var $q;
+    var $timeout;
 
-    beforeEach(inject(function(_appcache_, _$rootScope_, _$q_) {
+    beforeEach(inject(function(_appcache_, _$rootScope_, _$q_, _$timeout_) {
       appcache = _appcache_;
       $rootScope = _$rootScope_;
       $q = _$q_;
+      $timeout = _$timeout_;
     }));
 
     it('gets offered all API methods', function() {
@@ -53,6 +55,7 @@ describe('on a page with a manifest link', function() {
       .catch(function() {
         done();
       });
+      setTimeout($timeout.flush, 50);
     });
 
     describe('eventlisteners', function() {

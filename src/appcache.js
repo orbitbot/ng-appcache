@@ -63,8 +63,8 @@
           self.removeEventListener('updateready', resolve);
           self.removeEventListener('noupdate', reject);
         }
-        function resolve() { deferred.resolve(); $rootScope.$digest(); cleanup(); }
-        function reject()  { deferred.reject();  $rootScope.$digest(); cleanup(); }
+        function resolve() { $timeout(function() { deferred.resolve(); cleanup(); }, 0, true); }
+        function reject()  { $timeout(function() { deferred.reject();  cleanup(); }, 0, true); }
 
         self.addEventListener('updateready', resolve);
         self.addEventListener('noupdate', reject);
