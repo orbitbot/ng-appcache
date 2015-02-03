@@ -11,7 +11,7 @@ var connect = require('gulp-connect');
 var paths = {
   dist  : 'dist/**',
   js    : 'src/appcache.js',
-  tests : 'test/*.js'
+  tests : 'test/**'
 };
 
 

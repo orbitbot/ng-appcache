@@ -74,9 +74,11 @@ describe('on a page with a manifest link', function() {
 
       it('should allow removing event listeners', function(done) {
         appcache.off('noupdate', checkListener);
-        appcache.on('noupdate', function() {
-          setTimeout(done, 300);
-        });
+        function delayDone() {
+          setTimeout(done, 50);
+          appcache.off('noupdate', delayDone);
+        }
+        appcache.on('noupdate', delayDone);
         window.applicationCache.update();
       });
     });

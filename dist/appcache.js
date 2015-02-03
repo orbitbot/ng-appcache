@@ -19,11 +19,11 @@
                 }, delay, true);
               }
             });
+            if (!angular.isUndefined(attrs.dismissOnClick))
+              element.bind('click', function() {
+                element.addClass('ng-hide');
+              });
           }
-          if (!angular.isUndefined(attrs.dismissOnClick))
-            element.bind('click', function() {
-              element.addClass('ng-hide');
-            });
         }
       };
     }];
