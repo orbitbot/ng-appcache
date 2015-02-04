@@ -10,14 +10,19 @@
     "angular",
     "angularJS",
     "appcache",
+    "applicationcache",
     "offline"
   ],
   "license": "MIT",
+  "main": [
+    "dist/appcache.js",
+    "dist/appcache.min.js",
+    "bower.json"
+  ],
   "ignore": [
-    "**/.*",
     "node_modules",
-    "bower_components",
+    "src",
     "test",
-    "tests"
+    "*.*"
   ]
 }
