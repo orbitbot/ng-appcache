@@ -27,6 +27,68 @@ angular.module('myApp', ['ng-appcache']);
 <br />
 ## Service API
 
+Include ```appcache``` as a dependency for your angular component, eg.
+
+```js
+angular.controller('MyCtrl', function(appcache) {
+
+  appcache.checkUpdate().then(function() { alert('There\'s an update available!'); });
+  // ...
+});
+```  
+
+The service offers the following API:
+
+##### appcache.abortUpdate()
+Abort an ongoing appcache download. The function returns a ```$q``` promise, which will always resolve. If there is no ongoing appcache download, this function will have no effect. 
+
+##### appcache.checkUpdate()
+Manually check if a new application cache is available, and automatically download it if so. This function returns a ```$q``` promise, which will be resolved when the update is ready to be applied, or will be rejected if no update is available.
+
+**N.B.** browsers usually automatically check for updates when pages are (re-)loaded, so calling this function immediately on pageload is probably unnecessary.
+
+##### appcache.swapCache()
+If an appcache update is already downloaded, after a call to this method any requests for cached content will return new versions instead of the ones available from the cache. This function returns a ```$q``` promise that will be rejected if no cache is available, or resolved otherwise (success).
+
+**N.B.** the internet suggests that it is probably safer to do a full pageload when you have an appcache update downloaded, so that there are no mixed resource versions in use.
+
+##### appcache.addEventListener(eventName, handler, useCapture)
+Register a function _handler_ which will be executed when _eventName_ fires. See [this reference](http://www.quirksmode.org/js/events_order.html) for an explanation of the _useCapture_ parameter.
+
+_eventName_ can be one of ```'cached', 'checking', 'downloading', 'error', 'noupdate', 'obsolete', 'progress'``` or ```'updateready'```.
+
+##### appcache.removeEventListener(eventName, handler, useCapture)
+Remove function _handler_ previously registered to be executed when _eventName_ fires. _handler_ must refer to a named function or a stored variable containing a function, otherwise this call will have no effect.
+
+##### appcache.on(...)
+Syntactic sugar for .addEventListener, accepts the same parameters.
+
+##### appcache.off(...)
+Syntactic sugar for .removeEventListener, accepts the same parameters.
+
+##### appcache.status
+A string representation of the current appcache state. ```appcache.status``` will be one of ```'UNCACHED', 'IDLE', 'CHECKING', 'DOWNLOADING', 'UPDATEREADY'``` or ```'OBSOLETE'```.
+
+<br />
+##### Unsupported browsers
+In the case of a browser that does not support appcache, calls to  
+
+    appcache.abortUpdate()
+    appcache.checkUpdate()
+    appcache.swapCache()
+
+will return a rejected promise, 
+    
+    appcache.addEventListener()
+    appcache.removeEventListener()
+    appcache.on()
+    appcache.off()
+
+will have no effect, and
+    
+    appcache.status
+will be ```undefined```.
+
 <br />
 ## Directives
 
