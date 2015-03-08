@@ -28,14 +28,18 @@ describe('a browser without applicationCache', function() {
       expect(reason).to.equal('unsupported');
     }
 
-    appcache.abortUpdate().catch(checkFail)
-    .then(appcache.checkUpdate().catch(checkFail))
+    appcache.checkUpdate().catch(checkFail)
     .then(appcache.swapCache().catch(checkFail))
     .then(function() {
       done();
     });
 
     $rootScope.$digest();
+  });
+
+  it('returns false when abortUpdate is called', function() {
+    var result = appcache.abortUpdate();
+    expect(result).to.equal(false);
   });
 
   it('does not throw errors for unsupported methods', function() {
@@ -50,5 +54,9 @@ describe('a browser without applicationCache', function() {
 
   it('should have an undefined applicationCache.status', function() {
     expect(appcache.status).to.be.undefined();
+  });
+
+  it('should have an undefined applicationCache.textStatus', function() {
+    expect(appcache.textStatus).to.be.undefined();
   });
 });

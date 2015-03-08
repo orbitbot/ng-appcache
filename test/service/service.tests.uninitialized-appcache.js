@@ -24,6 +24,11 @@ describe('on a page without a manifest link', function() {
       expect(appcache).to.have.property('off');
     });
 
+    it('returns false when abortUpdate is called', function() {
+      var result = appcache.abortUpdate();
+      expect(result).to.equal(false);
+    });
+
     it('rejects promise methods', function(done) {
       var count = 0;
 
@@ -33,20 +38,23 @@ describe('on a page without a manifest link', function() {
       }
 
       $q.all([
-        appcache.abortUpdate().then(function() { count += 1; }),
         appcache.checkUpdate().catch(checkFail),
         appcache.swapCache().catch(checkFail)
       ])
       .then(function() {
-        expect(count).to.equal(3);
+        expect(count).to.equal(2);
         done();
       });
 
       $rootScope.$digest();
     });
 
-    it('should display applicationCache.status as UNCACHED', function() {
-      expect(appcache.status).to.equal('UNCACHED');
+    it('should display applicationCache.status as 0', function() {
+      expect(appcache.status).to.equal(0);
+    });
+
+    it('should display applicationCache.textStatus as UNCACHED', function() {
+      expect(appcache.textStatus).to.equal('UNCACHED');
     });
 
   });

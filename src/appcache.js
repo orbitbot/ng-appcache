@@ -47,13 +47,16 @@
 
       self.abortUpdate = function() {
         try {
-          $window.applicationCache.abort();
+          if ($window.applicationCache.abort() === undefined)
+            return false;
+          else
+            return true;
         } catch(e) {
           // abort may be undefined in certain browsers, eg. PhantomJS
           if (!e.message.match(/^'undefined'/))
             throw e;
+          return false;
         }
-        return $q.when();
       };
 
       self.checkUpdate = function() {
@@ -113,17 +116,19 @@
         4: 'UPDATEREADY',
         5: 'OBSOLETE'
       };
-      self.status = statusTexts[$window.applicationCache.status];
+      self.status = $window.applicationCache.status;
+      self.textStatus = statusTexts[$window.applicationCache.status];
 
       $rootScope.$watch(function() {
         return $window.applicationCache.status;
       }, function(change) {
-        self.status = statusTexts[change];
+        self.status = change;
+        self.textStatus = statusTexts[change];
       });
 
       $window.applicationCache.addEventListener('error', function() { $rootScope.$digest(); }, false);
     } else {
-      self.abortUpdate = unsupported;
+      self.abortUpdate = function() { return false; };
       self.checkUpdate = unsupported;
       self.swapCache = unsupported;
       self.addEventListener = function() {};

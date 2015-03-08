@@ -51,4 +51,5 @@ gulp.task('develop', ['serve', 'jshint'], function() {
   gulp.watch([paths.dist, paths.tests], ['testRun']);
 });
 
+// gulp task for Travis tests
 gulp.task('ci', ['build', 'test']);

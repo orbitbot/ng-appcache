@@ -27,9 +27,14 @@ describe('on a page with a manifest link', function() {
     });
 
     it('should display the appcache status', function() {
-      expect(appcache.status).to.equal('IDLE');
+      expect(appcache.status).to.equal(1);
+      expect(appcache.textStatus).to.equal('IDLE');
     });
 
+    it('returns false when abortUpdate is called', function() {
+      var result = appcache.abortUpdate();
+      expect(result).to.equal(false);
+    });
 
     it('should reject promises fired in the wrong state', function(done) {
       var count = 0;
@@ -39,12 +44,9 @@ describe('on a page with a manifest link', function() {
         count += 1;
       }
 
-      $q.all([
-        appcache.abortUpdate().then(function() { count += 1; }),
-        appcache.swapCache().catch(checkFail)
-      ])
+      appcache.swapCache().catch(checkFail)
       .then(function() {
-        expect(count).to.equal(2);
+        expect(count).to.equal(1);
         done();
       });
       $rootScope.$digest();

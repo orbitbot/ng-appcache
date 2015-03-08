@@ -32,7 +32,9 @@ Include ```appcache``` as a dependency for your angular component, eg.
 ```js
 angular.controller('MyCtrl', function(appcache) {
 
-  appcache.checkUpdate().then(function() { alert('There\'s an update available!'); });
+  appcache.checkUpdate().then(function() {
+    alert('There\'s an update available!');
+  });
   // ...
 });
 ```  
@@ -40,7 +42,7 @@ angular.controller('MyCtrl', function(appcache) {
 The service offers the following API:
 
 ##### appcache.abortUpdate()
-Abort an ongoing appcache download. The function returns a ```$q``` promise, which will always resolve. If there is no ongoing appcache download, this function will have no effect. 
+Abort an ongoing appcache download. If an appcache update is ongoing and is successfully canceled, the function will return ```true```, in all other cases this function will return ```false``` and have no other effect. 
 
 ##### appcache.checkUpdate()
 Manually check if a new application cache is available, and automatically download it if so. This function returns a ```$q``` promise, which will be resolved when the update is ready to be applied, or will be rejected if no update is available.
@@ -66,14 +68,20 @@ Syntactic sugar for .addEventListener, accepts the same parameters.
 ##### appcache.off(...)
 Syntactic sugar for .removeEventListener, accepts the same parameters.
 
+##### appcache.textStatus
+A string representation of the current appcache state. ```appcache.textStatus``` will be one of ```'UNCACHED', 'IDLE', 'CHECKING', 'DOWNLOADING', 'UPDATEREADY'``` or ```'OBSOLETE'```.
+
 ##### appcache.status
-A string representation of the current appcache state. ```appcache.status``` will be one of ```'UNCACHED', 'IDLE', 'CHECKING', 'DOWNLOADING', 'UPDATEREADY'``` or ```'OBSOLETE'```.
+A numerical representation of the current appcache state which matches the constants provided by ```window.applicationCache.status``` and is expressed textually by ```appcache.textStatus```.
 
 <br />
-##### Unsupported browsers
+### Unsupported browsers
 In the case of a browser that does not support appcache, calls to  
 
     appcache.abortUpdate()
+
+will return ```false```
+
     appcache.checkUpdate()
     appcache.swapCache()
 
@@ -86,7 +94,9 @@ will return a rejected promise,
 
 will have no effect, and
     
-    appcache.status
+    appcache.status and
+    appcache.textStatus
+
 will be ```undefined```.
 
 <br />
