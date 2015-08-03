@@ -53,10 +53,10 @@ describe('a browser without applicationCache', function() {
   });
 
   it('should have an undefined applicationCache.status', function() {
-    expect(appcache.status).to.be.undefined();
+    expect(appcache.status).to.be.undefined;
   });
 
   it('should have an undefined applicationCache.textStatus', function() {
-    expect(appcache.textStatus).to.be.undefined();
+    expect(appcache.textStatus).to.be.undefined;
   });
 });
