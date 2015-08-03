@@ -1,6 +1,6 @@
 {
   "name": "ng-appcache",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/orbitbot/ng-appcache",
   "authors": [
     "Patrik Johnson <patrik@zebros.fi>"
@@ -14,11 +14,7 @@
     "offline"
   ],
   "license": "MIT",
-  "main": [
-    "dist/appcache.js",
-    "dist/appcache.min.js",
-    "bower.json"
-  ],
+  "main": "dist/appcache.js",
   "ignore": [
     "node_modules",
     "src",
